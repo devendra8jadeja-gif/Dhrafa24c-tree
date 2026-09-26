@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Dhrafa 24c family tree</title>
+<style id="css">
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#faf9f5;--surface:#ffffff;--surface2:#f1efe8;--text:#2c2c2a;--text2:#5f5e5a;--border:#d3d1c7;--accent:#185fa5;--accent-bg:#e6f1fb;--green:#3b6d11;--red:#a32d2d;--yb:#fff2a8;--yl:#c9a400;--yt:#5c4700;--amber:#854f0b;--amber-bg:#faeeda;--foot:calc(36px + env(safe-area-inset-bottom,0px))}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1f1e1d;--surface:#2c2c2a;--surface2:#262624;--text:#f1efe8;--text2:#b4b2a9;--border:#4a4945;--accent:#85b7eb;--accent-bg:#0c447c;--green:#97c459;--red:#f09595;--yb:#5a4a00;--yl:#e0b800;--yt:#ffe27a;--amber:#ef9f27;--amber-bg:#412402}}
+:root[data-theme="dark"]{--bg:#1f1e1d;--surface:#2c2c2a;--surface2:#262624;--text:#f1efe8;--text2:#b4b2a9;--border:#4a4945;--accent:#85b7eb;--accent-bg:#0c447c;--green:#97c459;--red:#f09595;--yb:#5a4a00;--yl:#e0b800;--yt:#ffe27a;--amber:#ef9f27;--amber-bg:#412402}
+html{background:var(--bg);scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;padding-bottom:var(--foot);background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+#app{max-width:980px;margin:0 auto;padding:14px 14px 0}
+h1{font-size:20px;font-weight:500;margin:0}
+.muted{color:var(--text2)}
+.small{font-size:12px}
+button,input,select,textarea,.btn{font:inherit;color:var(--text)}
+button,.btn{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 12px;min-height:40px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+button:active{transform:scale(.98)}
+input,select,textarea{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px 10px;min-height:40px;width:100%}
+.row{display:flex;gap:8px;margin:0 0 8px;flex-wrap:wrap;align-items:center}
+.row>input{flex:1;min-width:0}
+.leg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12px;color:var(--text2);margin:0 0 8px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:4px}
+#sc{overflow:auto;background:var(--surface2);border-radius:12px;padding:14px 10px;touch-action:pan-x pan-y}
+#zs{margin:0 auto;position:relative}
+#zw{display:inline-block;width:max-content;transform-origin:0 0}
+.ctr{display:flex;justify-content:center}
+.col{display:flex;flex-direction:column;align-items:center}
+.kids{display:flex;direction:rtl;align-items:flex-start}
+.kid{position:relative;padding:14px 4px 0;direction:ltr;display:flex;flex-direction:column;align-items:center}
+.ln{position:absolute;top:0;border-top:1px solid var(--border)}
+.stem{width:0;height:8px;border-left:1px solid var(--border)}
+.cb{display:flex;flex-direction:column;align-items:center;gap:4px}
+.card{min-width:92px;min-height:48px;padding:6px 8px 6px 10px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:var(--surface);border-left-width:4px}
+.card.dr{border-style:dashed;border-left-style:solid;border-color:var(--yl);background:var(--yb)}
+.card.dr .nm,.card.dr .st{color:var(--yt)}
+.card.sel{background:var(--accent-bg);border-color:var(--accent)}
+.card.dr.sel{background:var(--yb);border-color:var(--accent)}
+.nm{font-size:13px;font-weight:500}
+.st{font-size:11px;color:var(--text2)}
+.plus{width:30px;height:30px;min-height:30px;padding:0;border-radius:50%;font-size:16px;line-height:1}
+.endp{min-width:44px;min-height:48px;border-style:dashed;font-size:18px}
+.box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin:8px 0}
+.note{background:var(--accent-bg);color:var(--accent);border-radius:8px;padding:8px 10px;font-size:13px;margin:0 0 8px}
+#panel:empty{display:none}
+#foot{position:fixed;left:0;right:0;bottom:0;z-index:5;background:var(--surface);border-top:1px solid var(--border);padding:8px 10px calc(8px + env(safe-area-inset-bottom,0px));text-align:center;font-size:12px;line-height:18px;color:var(--text2)}
+#panel{position:sticky;bottom:var(--foot);z-index:4;background:var(--surface);border-top:1px solid var(--border);padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px));margin:12px -14px 0}
+</style>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<script type="application/json" id="seed">{"title":"Dhrafa 24c family tree","tree":{"k":"g104","n":"Jam Ravalji","s":"D","c":[{"k":"g103","n":"Jam Vibhaji","s":"D","c":[{"k":"g102","n":"Jam Sataji","s":"D","c":[{"k":"g101","n":"Jam Ajaji","s":"D","c":[{"k":"a0","n":"Lakhaji","s":"D","c":[{"k":"a1","n":"Jasaji","s":"D","c":[{"k":"a2","n":"Modji","s":"D","c":[{"k":"a3","n":"Radhubha","s":"D"},{"k":"a4","n":"Devaji","s":"D"},{"k":"a5","n":"Unadji","s":"D"},{"k":"a6","n":"Kayaji","s":"D"},{"k":"a7","n":"Jakhraji","s":"D"},{"k":"a8","n":"Desadji","s":"D"},{"k":"a9","n":"Hajaji","s":"D"},{"k":"a10","n":"Kalaji","s":"D","c":[{"k":"qba3v7gnpy7","n":"Kabrji","s":"D","c":[{"k":"q8uwvs4mjtb","n":"Hathhibhi","s":"D","c":[{"k":"q41v9f3s8qv","n":"Aajabhai","s":"D","c":[{"k":"qaqxsgww7u0","n":"Bapubha","s":"D","c":[{"k":"q9srepop1je","n":"Balubha","s":"D","c":[{"k":"q4voii6mbs3","n":"Jambha","s":"D","c":[{"k":"q176y06cwnu","n":"Gajubha","s":"D","c":[{"k":"qfj1rnr2qlx","n":"Janaksinh","s":"A","c":[{"k":"qxczy8sipee","n":"Rajendrasinh","s":"A","c":[{"k":"q31lxmc316l","n":"Dushyantsinh","s":"A","c":[{"k":"qkopoujuth1","n":"Shivadityasinh","s":"A"}]},{"k":"xfar05vklqq","n":"Pushparajsinh","s":"D"}]}]},{"k":"q622rms2qdd","n":"Jatubha","s":"D","c":[{"k":"qgyr42dukoy","n":"Narendrasinh","s":"A","c":[{"k":"q09e35vop35","n":"Pratipalsinh","s":"A"}]},{"k":"qt3j1t1ty9y","n":"Hardevsinh","s":"D"},{"k":"qspewy36dwe","n":"Sajubha","s":"A","c":[{"k":"qzab2txo1od","n":"Karshrajsinh","s":"U"}]}]},{"k":"q1b1phtv0b0","n":"Jethubha","s":"U","c":[{"k":"q9g7tp19tow","n":"Ghanshyamsinh","s":"D"},{"k":"qc7yygu6a21","n":"Mulrajsinh","s":"D","c":[{"k":"q02cguhiii5","n":"Mayursinh","s":"A","c":[{"k":"q0cijy46co5","n":"Ratnadeepsinh","s":"A"}]},{"k":"qwrholkesjv","n":"Shaktisinh","s":"A","c":[{"k":"ql4ooyojvxp","n":"Veeraadityasinh","s":"U"}]}]}]}]}]}]}]}]}]},{"k":"qko30je914o","n":"Mokaji","s":"D","c":[{"k":"qexv1nyvlxl","n":"Vaktaji","s":"D"}]}]}]},{"k":"a11","n":"Harbhamji","s":"D","c":[{"k":"a12","n":"Varsoji","s":"U","c":[{"k":"a13","n":"Jijibhai","s":"U","c":[{"k":"a14","n":"Jagaji","s":"U","c":[{"k":"a15","n":"Aliyaji","s":"U","c":[{"k":"a16","n":"Savaji","s":"U","c":[{"k":"a17","n":"Lakhubha","s":"U","c":[{"k":"a18","n":"Anirudhsinh","s":"A","c":[{"k":"a19","n":"Raghvendrasinh","s":"A"}]},{"k":"a20","n":"Baldevsinh","s":"A","c":[{"k":"a21","n":"Devendrasinh","s":"A","c":[{"k":"a22","n":"Shivduttsinh","s":"A"}]}]},{"k":"a23","n":"Narendrasinh","s":"A","c":[{"k":"a24","n":"Krushnapalsinh","s":"A"}]},{"k":"qccjr7grx2c","n":"Ghambhirsinh","s":"D"},{"k":"xnhzwq3h4lf","n":"Vikramsinh","s":"D","c":[{"k":"qox6nevwvc6","n":"Girirajsinh","s":"A","c":[{"k":"qmbbj1ou5y5","n":"Dakshrajainh","s":"A"}]},{"k":"qtnyuf6yxdj","n":"Mayursinh","s":"A","c":[{"k":"q0si104rcm4","n":"Bhavdeepsinh","s":"A"}]}]},{"k":"q3lzdk0164e","n":"Juvansinh","s":"D","c":[{"k":"qiq2xpxus7o","n":"Shaktisinh","s":"A","c":[{"k":"qh4yf7rd4u9","n":"Dhairyarajsinh","s":"A"}]},{"k":"q5d0rwoc3a5","n":"Kuldipsinh","s":"A","c":[{"k":"qnoq85zjflh","n":"Rudrajsinh","s":"A"}]},{"k":"qo0bus874hp","n":"Jitnderasinh","s":"D"}]}]}]}]}]}]}]}]},{"k":"a25","n":"Aliyaji","s":"D"},{"k":"a26","n":"Jetaji","s":"D"},{"k":"a27","n":"Ravaji","s":"D"}]}]}]}]}]}]}]}}</script>
+<script id="code">
+(function(){
+var LS={A:'Alive',D:'Dead',U:'Unknown'};
+var SEED=JSON.parse(document.getElementById('seed').textContent);
+var CFG={
+  apiKey: "AIzaSyCFTWYrKcCP2UM29wJJ7jaVdxnSJjRfnU8",
+  authDomain: "dhrafa24c-tree.firebaseapp.com",
+  projectId: "dhrafa24c-tree",
+  storageBucket: "dhrafa24c-tree.firebasestorage.app",
+  messagingSenderId: "947916769291",
+  appId: "1:947916769291:web:1f0bbcdbf3c06828615f0e"
+};
+var app=document.getElementById('app');
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function sesGet(k){try{return sessionStorage.getItem(k);}catch(e){return null;}}
+function sesSet(k,v){try{sessionStorage.setItem(k,v);}catch(e){}}
+
+// ---------- Firebase ----------
+var db=null,fbOk=false,HC='979d547a884ae5ae842353d7b1f7540c7956594b4312c3f1bb943de16024498d',HA='df175560be83093257a6f593aa1bfc5a90ae12db125a32f8ced7d21cae916f3b';
+function sha256(str){
+var m=unescape(encodeURIComponent(str)),b=[],i,j;
+for(i=0;i<m.length;i++){b.push(m.charCodeAt(i));}
+var bl=b.length*8;
+b.push(128);while(b.length%64!==56){b.push(0);}
+b.push(0,0,0,0,(bl>>>24)&255,(bl>>>16)&255,(bl>>>8)&255,bl&255);
+var K=[],H=[],pr=[],n=2;
+function r(x,c){return (x>>>c)|(x<<(32-c));}
+while(pr.length<64){var ok=true;for(j=0;j<pr.length;j++){if(n%pr[j]===0){ok=false;break;}}if(ok){pr.push(n);}n++;}
+for(i=0;i<64;i++){K[i]=Math.floor((Math.pow(pr[i],1/3)%1)*4294967296)|0;}
+for(i=0;i<8;i++){H[i]=Math.floor((Math.pow(pr[i],0.5)%1)*4294967296)|0;}
+for(var o=0;o<b.length;o+=64){
+var w=[];
+for(i=0;i<16;i++){w[i]=(b[o+i*4]<<24)|(b[o+i*4+1]<<16)|(b[o+i*4+2]<<8)|b[o+i*4+3];}
+for(i=16;i<64;i++){var s0=r(w[i-15],7)^r(w[i-15],18)^(w[i-15]>>>3),s1=r(w[i-2],17)^r(w[i-2],19)^(w[i-2]>>>10);w[i]=(w[i-16]+s0+w[i-7]+s1)|0;}
+var a=H[0],bb=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+for(i=0;i<64;i++){
+var S1=r(e,6)^r(e,11)^r(e,25),ch=(e&f)^(~e&g),t1=(h+S1+ch+K[i]+w[i])|0,S0=r(a,2)^r(a,13)^r(a,22),mj=(a&bb)^(a&c)^(bb&c),t2=(S0+mj)|0;
+h=g;g=f;f=e;e=(d+t1)|0;d=c;c=bb;bb=a;a=(t1+t2)|0;
+}
+H[0]=(H[0]+a)|0;H[1]=(H[1]+bb)|0;H[2]=(H[2]+c)|0;H[3]=(H[3]+d)|0;H[4]=(H[4]+e)|0;H[5]=(H[5]+f)|0;H[6]=(H[6]+g)|0;H[7]=(H[7]+h)|0;
+}
+return H.map(function(x){return ('00000000'+(x>>>0).toString(16)).slice(-8);}).join('');
+}
+function initFirebase(){
+try{
+if(typeof firebase==='undefined'){return false;}
+if(!firebase.apps||!firebase.apps.length){firebase.initializeApp(CFG);}
+db=firebase.firestore();
+return true;
+}catch(e){return false;}
+}
+
+// ---------- Role / login ----------
+var role='v',canAdd=false,loginOpen=false,loginErr='',fromName='';
+function setRole(r){
+role=r;canAdd=(r==='a'||r==='c');
+if(r==='v'){try{sessionStorage.removeItem('mft-role');}catch(e){}}else{sesSet('mft-role',r);}
+}
+function doLogin(){
+var u=$('lu').value.trim().toLowerCase(),p=$('lp').value;
+var h=sha256('mft|'+u+'|'+p);
+if(h===HC){loginOpen=false;loginErr='';setRole('c');afterRoleChange();}
+else if(h===HA){loginOpen=false;loginErr='';setRole('a');afterRoleChange();}
+else{loginErr='Wrong username or password.';render();}
+}
+function afterRoleChange(){
+sel=null;mode=null;err='';reqOpen=false;
+detachAllChildListeners();
+detachPendingListener();
+if(role==='a'){attachPendingListener();maybeAutoRecalc();}
+render();
+reopenTree();
+}
+
+// ---------- Tree state (lazy, Firestore-backed) ----------
+var live=false,recalcBusy=false; // becomes true once a root document exists in Firestore
+var nodes={}; // id -> {id,n,s,pk,ord,pending,f,hasKids}
+var childrenOf={}; // parentId -> [id,...] ordered
+var openSet={}; // id -> true if expanded
+var listeners={}; // id -> unsubscribe fn for that node's children
+var rootListenerUnsub=null;
+var rootIds=[];
+var sel=null,mode=null,err='',delArm=null,msg='',reqOpen=false,pending=[],pendingUnsub=null,importBusy=false;
+var localFallback=null; // used only when Firestore has no data yet
+
+function nodeRef(id){return db.collection('people').doc(id);}
+function childQuery(pid){return db.collection('people').where('pk','==',pid);}
+function tsVal(t){if(t&&typeof t.toMillis==='function'){return t.toMillis();}return typeof t==='number'?t:0;}
+
+function upsertFromSnap(doc){
+var d=doc.data();
+nodes[doc.id]={id:doc.id,n:d.n,s:d.s,pk:d.pk,ord:d.ord,pending:!!d.pending,f:d.f||'',hasKids:!!d.hasKids,count:typeof d.count==='number'?d.count:0};
+}
+function attachRootListener(){
+if(rootListenerUnsub){return;}
+rootListenerUnsub=db.collection('people').where('pk','==','').onSnapshot(function(qs){
+var arr=[];
+qs.forEach(function(doc){upsertFromSnap(doc);arr.push(doc.id);});
+arr.sort(function(x,y){return (nodes[x].ord||0)-(nodes[y].ord||0);});
+rootIds=arr;
+if(arr.length&&!live){live=true;localFallback=null;}
+autoExpandIfNeeded(arr);
+maybeAutoRecalc();
+render();
+},function(e){msg='Could not reach the database. '+(e&&e.message?e.message:'');render();});
+}
+function attachChildListener(pid){
+if(listeners[pid]){return;}
+listeners[pid]=childQuery(pid).onSnapshot(function(qs){
+var arr=[];
+qs.forEach(function(doc){upsertFromSnap(doc);arr.push(doc.id);});
+arr.sort(function(x,y){return (nodes[x].ord||0)-(nodes[y].ord||0);});
+childrenOf[pid]=arr;
+autoExpandIfNeeded(arr);
+render();
+},function(e){msg='Could not load that branch. '+(e&&e.message?e.message:'');render();});
+}
+function detachChildListener(pid){
+if(listeners[pid]){listeners[pid]();delete listeners[pid];}
+}
+function detachAllChildListeners(){
+Object.keys(listeners).forEach(function(k){listeners[k]();});
+listeners={};
+}
+function attachPendingListener(){
+if(pendingUnsub){return;}
+pendingUnsub=db.collection('people').where('pending','==',true).onSnapshot(function(qs){
+var arr=[];
+qs.forEach(function(doc){var d=doc.data();arr.push({id:doc.id,n:d.n,s:d.s,pk:d.pk,f:d.f||'',ts:tsVal(d.ts)});upsertFromSnap(doc);});
+arr.sort(function(x,y){return x.ts-y.ts;});
+pending=arr;
+render();
+},function(e){msg='Could not load requests. '+(e&&e.message?e.message:'');render();});
+}
+function detachPendingListener(){
+if(pendingUnsub){pendingUnsub();pendingUnsub=null;}
+pending=[];
+}
+var expandAllMode=false;
+function toggleOpen(id){
+if(openSet[id]){
+openSet[id]=false;detachChildListener(id);
+}else{
+openSet[id]=true;attachChildListener(id);
+}
+render();
+}
+function autoExpandIfNeeded(ids){
+if(!expandAllMode){return;}
+var any=false;
+ids.forEach(function(id){
+var n=nodes[id];
+if(n&&n.hasKids&&!openSet[id]){openSet[id]=true;attachChildListener(id);any=true;}
+});
+return any;
+}
+function reopenTree(){
+Object.keys(openSet).forEach(function(id){if(openSet[id]){attachChildListener(id);}});
+}
+function chainOf(id){
+var a=[],cur=nodes[id],guard=0;
+while(cur&&guard<80){a.unshift(cur);if(!cur.pk){break;}cur=nodes[cur.pk];guard++;}
+return a;
+}
+function ancestorIdsOf(id,cb){
+var ids=[],cur=nodes[id],guard=0;
+function step(){
+if(!cur||!cur.pk||guard>80){cb(ids);return;}
+ids.unshift(cur.pk);
+if(nodes[cur.pk]){cur=nodes[cur.pk];guard++;step();}
+else{
+nodeRef(cur.pk).get().then(function(doc){
+if(doc.exists){upsertFromSnap(doc);cur=nodes[cur.pk];guard++;step();}
+else{cb(ids);}
+}).catch(function(){cb(ids);});
+}
+}
+step();
+}
+function openPathTo(id){
+ancestorIdsOf(id,function(ids){
+ids.forEach(function(a){if(!openSet[a]){openSet[a]=true;attachChildListener(a);}});
+sel=id;mode=null;err='';delArm=null;
+render();
+setTimeout(function(){showCard(id);},60);
+});
+}
+function midOrd(a,b){
+if(a===undefined&&b===undefined){return 1000;}
+if(a===undefined){return b-1000;}
+if(b===undefined){return a+1000;}
+return (a+b)/2;
+}
+
+// ---------- Cascade helpers ----------
+function fetchAllDescendants(id,acc){
+return db.collection('people').where('pk','==',id).get().then(function(qs){
+var kids=[];
+qs.forEach(function(doc){kids.push(doc.id);acc.push(doc.id);});
+return Promise.all(kids.map(function(k){return fetchAllDescendants(k,acc);}));
+});
+}
+function deleteCascade(id){
+var acc=[];
+return fetchAllDescendants(id,acc).then(function(){
+acc.push(id);
+var batches=[],i=0;
+while(i<acc.length){
+var b=db.batch(),chunk=acc.slice(i,i+450);
+chunk.forEach(function(x){b.delete(nodeRef(x));});
+batches.push(b.commit());
+i+=450;
+}
+return Promise.all(batches);
+});
+}
+
+// ---------- Add / approve / reject ----------
+function siblingOrdsNear(pid,idx){
+var ids=childrenOf[pid]||[];
+var before=idx>0?nodes[ids[idx-1]].ord:undefined;
+var after=idx<ids.length?nodes[ids[idx]].ord:undefined;
+return midOrd(before,after);
+}
+function submitName(pid,name,status,idx){
+if(!db){msg='Not connected to the database yet.';render();return;}
+var ord=siblingOrdsNear(pid,idx);
+var data={n:name,n_lower:name.toLowerCase(),s:status,pk:pid,ord:ord,pending:true,count:0,f:fromName||'',ts:firebase.firestore.FieldValue.serverTimestamp()};
+db.collection('people').add(data).then(function(ref){
+db.collection('people').doc(pid).set({hasKids:true},{merge:true});
+if(!openSet[pid]){openSet[pid]=true;attachChildListener(pid);}
+sel=ref.id;mode=null;err='';render();
+setTimeout(function(){showCard(ref.id);},80);
+}).catch(function(e){err='Could not save. Check your connection and try again.';render();});
+}
+function walkUpIncrement(startId,delta){
+if(!startId){return;}
+var id=startId,guard=0;
+function step(){
+if(!id||guard>80){return;}
+var ref=nodeRef(id);
+ref.update({count:firebase.firestore.FieldValue.increment(delta)}).catch(function(){});
+var cur=nodes[id];
+if(cur){if(typeof cur.count!=='number'){cur.count=0;}cur.count+=delta;}
+if(cur&&cur.pk){id=cur.pk;guard++;step();}
+else if(cur&&!cur.pk){id=null;}
+else{
+ref.get().then(function(doc){
+if(doc.exists){var d=doc.data();id=d.pk||null;guard++;step();}
+else{id=null;}
+}).catch(function(){id=null;});
+}
+}
+step();
+}
+function checkDuplicate(pid,name){
+return db.collection('people').where('pk','==',pid).where('n_lower','==',name.toLowerCase()).get().then(function(qs){
+var dup=false;
+qs.forEach(function(d){if(!d.data().pending){dup=true;}});
+return dup;
+});
+}
+function approveNode(id){
+if(role!=='a'){return;}
+var n=nodes[id];
+if(!n){return;}
+var parent=nodes[n.pk];
+if(n.pk&&parent&&parent.pending){msg='Approve its parent first.';render();return;}
+checkDuplicate(n.pk,n.n).then(function(dup){
+if(dup){msg='A name like this already exists here. Rename it first if this is a different person.';render();return;}
+nodeRef(id).update({pending:false}).then(function(){
+walkUpIncrement(n.pk,1);
+sel=id;render();
+}).catch(function(){msg='Could not save. Try again.';render();});
+});
+}
+function rejectNode(id){
+if(role!=='a'){return;}
+if(delArm===id){
+var n0=nodes[id],dec=(n0&&!n0.pending)?(1+(n0.count||0)):0,parentId=n0?n0.pk:null;
+deleteCascade(id).then(function(){
+if(dec>0){walkUpIncrement(parentId,-dec);}
+if(sel===id){sel=null;}
+delArm=null;render();
+}).catch(function(){msg='Could not remove it. Try again.';render();});
+}else{
+delArm=id;render();
+setTimeout(function(){if(delArm===id){delArm=null;render();}},4000);
+}
+}
+function renameNode(id,name){
+nodeRef(id).update({n:name,n_lower:name.toLowerCase()}).catch(function(){});
+}
+function statusNode(id,s){
+nodeRef(id).update({s:s}).catch(function(){});
+}
+function moveSel(dir){
+if(role!=='a'){return;}
+var n=nodes[sel];if(!n){return;}
+var ids=childrenOf[n.pk]||[];
+var i=ids.indexOf(sel),j=i+dir;
+if(j<0||j>=ids.length){return;}
+var other=nodes[ids[j]];
+var myOrd=n.ord,otherOrd=other.ord;
+nodeRef(n.id).update({ord:otherOrd}).catch(function(){});
+nodeRef(other.id).update({ord:myOrd}).catch(function(){});
+}
+function delSel(){
+var n=nodes[sel];if(!n||!n.pk){return;}
+if(role!=='a'&&!n.pending){return;}
+if(delArm===sel){
+var dec=(!n.pending)?(1+(n.count||0)):0,parentId=n.pk;
+deleteCascade(sel).then(function(){
+if(dec>0){walkUpIncrement(parentId,-dec);}
+sel=parentId;delArm=null;render();
+}).catch(function(){msg='Could not delete. Try again.';render();});
+}else{
+delArm=sel;render();
+setTimeout(function(){if(delArm===sel){delArm=null;render();}},4000);
+}
+}
+
+// ---------- Import existing tree (one-time, approver only) ----------
+function importSeed(){
+if(importBusy){return;}
+importBusy=true;render();
+var ops=[];
+function walk(node,pk,idx){
+var ref=db.collection('people').doc();
+var kidCounts=(node.c||[]).map(function(c,i){return walk(c,ref.id,i);});
+var total=kidCounts.reduce(function(a,b){return a+1+b;},0);
+ops.push({ref:ref,data:{n:node.n,n_lower:node.n.toLowerCase(),s:(node.s==='A'||node.s==='D')?node.s:'U',pk:pk,ord:(idx+1)*1000,pending:false,count:total,f:'',hasKids:!!(node.c&&node.c.length)}});
+return total;
+}
+walk(SEED.tree,'',0);
+var i=0,batches=[];
+while(i<ops.length){
+var b=db.batch(),chunk=ops.slice(i,i+450);
+chunk.forEach(function(o){b.set(o.ref,o.data);});
+batches.push(b.commit());
+i+=450;
+}
+Promise.all(batches).then(function(){
+importBusy=false;msg='Imported. The tree is now live.';render();
+}).catch(function(){
+importBusy=false;msg='Import failed. Check your connection and try again.';render();
+});
+}
+
+function recalcCounts(silent){
+if(recalcBusy||!live||!db){return;}
+recalcBusy=true;if(!silent){msg='Recalculating…';render();}
+db.collection('people').get().then(function(qs){
+var all={};
+qs.forEach(function(doc){all[doc.id]=doc.data();});
+var kids={};
+Object.keys(all).forEach(function(id){var pk=all[id].pk||'';(kids[pk]=kids[pk]||[]).push(id);});
+var counts={};
+function comp(id){
+if(counts.hasOwnProperty(id)){return counts[id];}
+if(all[id].pending){counts[id]=0;return 0;}
+var list=kids[id]||[],total=0;
+list.forEach(function(cid){if(all[cid]&&!all[cid].pending){total+=1+comp(cid);}});
+counts[id]=total;
+return total;
+}
+Object.keys(all).forEach(function(id){comp(id);});
+var changed=Object.keys(all).filter(function(id){return (all[id].count||0)!==counts[id];});
+var i=0,batches=[];
+while(i<changed.length){
+var b=db.batch(),chunk=changed.slice(i,i+450);
+chunk.forEach(function(id){b.update(nodeRef(id),{count:counts[id]});});
+batches.push(b.commit());
+i+=450;
+}
+return Promise.all(batches);
+}).then(function(){
+recalcBusy=false;if(!silent){msg='Counts recalculated.';render();}
+}).catch(function(){
+recalcBusy=false;if(!silent){msg='Could not recalculate counts. Try again.';render();}
+});
+}
+var recalcDoneThisSession=false;
+function maybeAutoRecalc(){
+if(role==='a'&&live&&db&&!recalcDoneThisSession){recalcDoneThisSession=true;recalcCounts(true);}
+}
+
+function downloadBackup(){
+if(!db){return;}
+msg='Preparing backup…';render();
+db.collection('people').get().then(function(qs){
+var arr=[];
+qs.forEach(function(doc){
+var d=doc.data();
+arr.push({id:doc.id,n:d.n,s:d.s,pk:d.pk,ord:d.ord,pending:!!d.pending,count:typeof d.count==='number'?d.count:null,hasKids:!!d.hasKids,f:d.f||'',ts:tsVal(d.ts)});
+});
+var text=JSON.stringify(arr,null,2);
+try{
+var b=new Blob([text],{type:'application/json'}),u=URL.createObjectURL(b),a=document.createElement('a');
+a.href=u;a.download='family-tree-backup.json';document.body.appendChild(a);a.click();
+setTimeout(function(){try{document.body.removeChild(a);URL.revokeObjectURL(u);}catch(e){}},1500);
+msg='Backup downloaded.';
+}catch(e){msg='Could not create the file. Try a different browser.';}
+render();
+}).catch(function(){msg='Could not read the database. Try again.';render();});
+}
+
+// ---------- Search (prefix match, live) ----------
+var searchResults=[];
+function runSearch(term){
+term=term.trim().toLowerCase();
+if(!term||!db){searchResults=[];render();return;}
+db.collection('people').where('n_lower','>=',term).where('n_lower','<',term+'\uf8ff').limit(8).get().then(function(qs){
+var arr=[];
+qs.forEach(function(doc){var d=doc.data();arr.push({id:doc.id,n:d.n,pk:d.pk});});
+searchResults=arr;render();
+}).catch(function(){searchResults=[];render();});
+}
+
+// ---------- Rendering ----------
+function col(n){if(n.s==='A'){return 'var(--green)';}if(n.s==='D'){return n.hasKids?'var(--red)':'var(--text)';}return 'var(--accent)';}
+function card(n){
+var sub=n.pending?'Waiting for approval':(n.count?n.count+' below':'');
+var cls='card'+(n.pending?' dr':'')+(sel===n.id?' sel':'');
+var h='<div class="cb"><button class="'+cls+'" data-a="c" data-id="'+n.id+'" data-card="'+n.id+'" style="border-left-color:'+(n.pending?'var(--yl)':col(n))+'"><span class="nm">'+esc(n.n)+'</span>'+(sub?'<span class="st">'+esc(sub)+'</span>':'')+'</button>';
+if(canAdd){h+='<button class="plus" data-a="addc" data-id="'+n.id+'" aria-label="Add child to '+esc(n.n)+'">+</button>';}
+return h+'</div>';
+}
+function kidWrap(inner,i,total){
+var h='<div class="kid">';
+if(i>0){h+='<div class="ln" style="left:50%;right:0"></div>';}
+if(i<total-1){h+='<div class="ln" style="left:0;right:50%"></div>';}
+h+='<div class="ln" style="left:50%;height:14px;border-top:0;border-left:1px solid var(--border)"></div>';
+return h+inner+'</div>';
+}
+function subtree(id){
+var n=nodes[id];
+if(!n){return '<div class="col muted small">Loading…</div>';}
+var h='<div class="col">'+card(n);
+if(openSet[id]){
+var ids=childrenOf[id];
+if(ids===undefined){
+h+='<div class="stem"></div><div class="muted small" style="padding:6px 0">Loading…</div>';
+}else{
+var t=ids.length+(canAdd?1:0);
+h+='<div class="stem"></div><div class="kids">';
+ids.forEach(function(cid,i){h+=kidWrap(subtree(cid),i,t);});
+if(canAdd){h+=kidWrap('<button class="endp" data-a="addc" data-id="'+id+'" aria-label="Add another child to '+esc(n.n)+'">+</button>',ids.length,t);}
+h+='</div>';
+}
+}
+return h+'</div>';
+}
+function form(pid,label){
+var ids=childrenOf[pid]||[];
+var h='<div style="margin-top:6px"><div class="muted small" style="margin:0 0 4px">'+esc(label)+'</div>';
+h+='<div class="row"><input id="nn" placeholder="Name in English letters" style="flex:2"><select id="ns" style="flex:1;width:auto"><option value="U">Unknown</option><option value="A">Alive</option><option value="D">Dead</option></select></div>';
+if(ids.length){
+h+='<div class="row"><select id="pos">';
+for(var i=0;i<=ids.length;i++){
+var lb=i===0?'Eldest, older than '+nodes[ids[0]].n:(i===ids.length?'Youngest, younger than '+nodes[ids[ids.length-1]].n:'Between '+nodes[ids[i-1]].n+' and '+nodes[ids[i]].n);
+h+='<option value="'+i+'"'+(i===ids.length?' selected':'')+'>'+esc(lb)+'</option>';
+}
+h+='</select></div>';
+}
+if(role==='c'&&!fromName){
+h+='<div class="row"><input id="fn" placeholder="Your name (so the owner knows who suggested this)"></div>';
+}
+h+='<div class="row"><button data-a="save">'+(role==='a'?'Add':'Suggest')+'</button><button data-a="cancel">Cancel</button></div>';
+if(err){h+='<div style="color:var(--red);font-size:13px">'+esc(err)+'</div>';}
+return h+'</div>';
+}
+function statusSel(n){return '<select id="stt" aria-label="Status" style="flex:1;width:auto"><option value="A"'+(n.s==='A'?' selected':'')+'>Alive</option><option value="D"'+(n.s==='D'?' selected':'')+'>Dead</option><option value="U"'+(n.s==='U'?' selected':'')+'>Unknown</option></select>';}
+function panelHtml(){
+if(!sel){return '';}
+var n=nodes[sel];
+if(!n){return '<div class="muted small">Loading…</div>';}
+var ch=chainOf(sel);
+var h='<div style="font-size:16px;font-weight:500">'+esc(n.n)+'</div>';
+h+='<div class="muted small" style="margin:2px 0 6px">'+ch.map(function(x){return esc(x.n);}).join(' › ')+'</div>';
+if(n.pending){
+h+='<div class="small" style="margin:0 0 8px;color:var(--yt);background:var(--yb);padding:6px 8px;border-radius:8px">Waiting for approval'+(n.f?' · from '+esc(n.f):'')+'</div>';
+}
+if(role==='a'){
+h+='<div class="row"><input id="rn" value="'+esc(n.n)+'" aria-label="Name" style="flex:2">'+statusSel(n)+'</div>';
+h+='<div class="row"><button data-a="child">Add child</button>'+(n.pk?'<button data-a="bro">Add brother</button>':'')+'</div>';
+if(n.pending){h+='<div class="row"><button data-a="apv">Approve</button><button data-a="rej" style="color:var(--red)">'+(delArm===n.id?'Tap again to reject':'Reject')+'</button></div>';}
+if(n.pk){
+h+='<div class="row"><button data-a="older">Move right (older)</button><button data-a="younger">Move left (younger)</button></div>';
+if(!n.pending){h+='<div class="row"><button data-a="del" style="color:var(--red)">'+(delArm===n.id?'Tap again to delete':'Delete')+'</button></div>';}
+}
+}else if(n.pending&&role==='c'){
+h+='<div class="row"><input id="rn" value="'+esc(n.n)+'" aria-label="Name" style="flex:2">'+statusSel(n)+'</div>';
+h+='<div class="row"><button data-a="child">Add child</button><button data-a="del" style="color:var(--red)">'+(delArm===n.id?'Tap again to delete':'Delete my suggestion')+'</button></div>';
+}else if(role==='c'){
+h+='<div class="small muted" style="margin:0 0 8px">Locked. Only the approver can change or delete approved names.</div>';
+h+='<div class="row"><button data-a="child">Suggest a child</button>'+(n.pk?'<button data-a="bro">Suggest a brother</button>':'')+'</div>';
+}else{
+h+='<div class="small muted">Log in to suggest names.</div>';
+}
+if(mode){h+=form(mode==='child'?sel:n.pk,(role==='a'?'New ':'Suggest a new ')+(mode==='child'?'child of ':'brother under ')+esc(mode==='child'?n.n:(nodes[n.pk]?nodes[n.pk].n:'')));}
+return h;
+}
+function reqHtml(){
+if(role!=='a'||!reqOpen){return '';}
+var h='<div class="box"><div style="font-size:15px;font-weight:500;margin:0 0 4px">Requests waiting for approval</div>';
+if(!pending.length){h+='<div class="muted small">Nothing waiting right now.</div>';}
+pending.forEach(function(r){
+var p=nodes[r.pk];
+h+='<div style="border-top:1px solid var(--border);padding:8px 0"><div style="font-size:14px;font-weight:500">'+esc(r.n)+' <span class="muted small">'+LS[r.s]+(r.f?' · from '+esc(r.f):'')+'</span></div>';
+h+='<div class="muted small">Under: '+esc(p?p.n:'(loading…)')+'</div>';
+h+='<div class="row" style="margin:6px 0 0"><button data-a="jump" data-id="'+r.id+'">Open</button></div></div>';
+});
+return h+'</div>';
+}
+function searchHtml(){
+if(!searchResults.length){return '';}
+var h='<div class="row">';
+searchResults.forEach(function(x){
+var p=nodes[x.pk];
+h+='<button data-a="go" data-id="'+x.id+'" style="font-size:13px;min-height:36px">'+esc(x.n)+(p?' <span class="muted">son of '+esc(p.n)+'</span>':'')+'</button>';
+});
+return h+'</div>';
+}
+function tools(){
+var h='<button data-a="expall">Expand all</button><button data-a="colall">Collapse all</button>';
+if(role==='a'){h+='<button data-a="reqo">Requests'+(pending.length?' ('+pending.length+')':'')+'</button><button data-a="backup">Download backup</button>';}
+$('tools').innerHTML=h;
+$('mstat').textContent=msg||(role==='a'?'Approver':(role==='c'?'Contributor':'View only'));
+$('gnote').innerHTML=role==='a'?'<div class="note">Names waiting for approval are yellow. Tap one, then tap Approve. Changes go live for everyone right away.</div>':(role==='c'?'<div class="note">Approved names are locked. New names you suggest go live once the approver approves them.</div>':'<div class="note">Anyone can browse the tree. Log in to suggest names.</div>');
+$('auth').innerHTML=role==='v'?'<button data-a="lopen">Log in</button>':'<button data-a="lout">Log out</button>';
+$('leg2').innerHTML=(role==='c'||role==='a')?'<span><span class="dot" style="background:var(--yl)"></span>Yellow: waiting for approval</span>':'';
+$('login').innerHTML=loginHtml();
+}
+function loginHtml(){
+if(!loginOpen){return '';}
+return '<div class="box"><div style="font-size:15px;font-weight:500;margin:0 0 6px">Log in</div><input id="lu" placeholder="Username" autocomplete="username" autocapitalize="none" style="margin:0 0 6px"><input id="lp" type="password" placeholder="Password" autocomplete="current-password" style="margin:0 0 6px"><div class="row" style="margin:0"><button data-a="lgo">Log in</button><button data-a="lgc">Cancel</button></div>'+(loginErr?'<div style="color:var(--red);font-size:13px;margin-top:6px">'+esc(loginErr)+'</div>':'')+'</div>';
+}
+function render(){
+if(!live){renderOffline();return;}
+var sc=$('sc'),sl=sc.scrollLeft;
+if(!rootIds.length){
+sc.innerHTML='<div class="muted small" style="padding:10px">Loading the tree…</div>';
+}else{
+sc.innerHTML='<div id="zs"><div id="zw"><div class="ctr">'+rootIds.map(subtree).join('')+'</div></div></div>';
+}
+sc.scrollLeft=sl;
+$('panel').innerHTML=panelHtml();
+$('req').innerHTML=reqHtml();
+$('res').innerHTML=searchHtml();
+tools();
+}
+function renderOffline(){
+var sc=$('sc');
+if(role==='a'){
+sc.innerHTML='<div class="box"><div style="font-size:15px;font-weight:500;margin:0 0 6px">The live database is empty</div><div class="muted small" style="margin:0 0 10px">Import the current tree once to switch everyone over to live updates.</div><button data-a="import"'+(importBusy?' disabled':'')+'>'+(importBusy?'Importing…':'Import current tree into live database')+'</button></div>'
++'<div class="ctr" style="margin-top:14px">'+staticSubtree(SEED.tree)+'</div>';
+}else{
+sc.innerHTML='<div class="muted small" style="padding:10px">The tree hasn\'t been switched on yet. Ask the admin to finish setup.</div><div class="ctr" style="margin-top:10px">'+staticSubtree(SEED.tree)+'</div>';
+}
+$('panel').innerHTML='';
+$('req').innerHTML='';
+$('res').innerHTML='';
+tools();
+}
+function staticSubtree(n){
+var h='<div class="col"><div class="cb"><button class="card" style="border-left-color:'+(n.s==='A'?'var(--green)':n.s==='D'?(n.c&&n.c.length?'var(--red)':'var(--text)'):'var(--accent)')+'"><span class="nm">'+esc(n.n)+'</span></button></div>';
+if(n.c&&n.c.length){
+h+='<div class="stem"></div><div class="kids">';
+n.c.forEach(function(c,i){h+=kidWrap(staticSubtree(c),i,n.c.length);});
+h+='</div>';
+}
+return h+'</div>';
+}
+function shell(){
+app.innerHTML='<div class="row" style="justify-content:space-between;align-items:baseline;margin:0 0 6px"><h1 id="ttl"></h1><span id="auth"></span></div><div id="mstat" class="muted small" aria-live="polite" style="margin:0 0 6px"></div><div id="login"></div>'
++'<div id="gnote"></div>'
++'<div class="row"><input id="q" type="search" placeholder="Search a name"></div><div id="res" style="margin:0 0 6px"></div>'
++'<div class="row" id="tools"></div>'
++'<div class="leg"><span><span class="dot" style="background:var(--green)"></span>Alive</span><span><span class="dot" style="background:var(--red)"></span>Dead, has descendants</span><span><span class="dot" style="background:var(--text)"></span>Dead, branch ended</span><span><span class="dot" style="background:var(--accent)"></span>Unknown</span><span id="leg2"></span></div>'
++'<div class="row" style="margin:0 0 6px"><button data-a="zo" aria-label="Zoom out">−</button><span id="zl" class="small muted" style="min-width:40px;text-align:center">100%</span><button data-a="zi" aria-label="Zoom in">+</button><button data-a="zf">Fit</button><span class="small muted">Pinch to zoom</span></div>'
++'<div id="sc"></div><div class="muted small" style="margin:6px 0 0">Swipe to move around. The eldest is on the right.</div>'
++'<div id="req"></div><div id="panel"></div><div id="foot">Designed and created by DEVENDRASINH BALDEVSINH JADEJA</div>';
+$('ttl').textContent=SEED.title||'Family tree';
+}
+function showCard(id){var el=document.querySelector('[data-card="'+id+'"]');if(el&&el.scrollIntoView){el.scrollIntoView({inline:'center',block:'nearest'});}}
+
+// ---------- Zoom ----------
+var zoom=1;
+function layoutZoom(){
+var zs=document.getElementById('zs'),w=document.getElementById('zw');if(!zs||!w){return;}
+w.style.transform='scale('+zoom+')';
+zs.style.width=Math.ceil(w.offsetWidth*zoom)+'px';
+zs.style.height=Math.ceil(w.offsetHeight*zoom)+'px';
+var zl=$('zl');if(zl){zl.textContent=Math.round(zoom*100)+'%';}
+}
+function setZoom(nz,cx){
+nz=Math.max(0.3,Math.min(2.5,nz));
+if(Math.abs(nz-zoom)<0.001){return;}
+var sc=$('sc'),r=sc.getBoundingClientRect(),px=(cx===undefined?sc.clientWidth/2:cx-r.left);
+var before=sc.scrollLeft+px,ratio=nz/zoom;
+zoom=nz;layoutZoomWrap();sc.scrollLeft=before*ratio-px;
+}
+function layoutZoomWrap(){layoutZoom();}
+function fit(){var sc=$('sc'),w=document.getElementById('zw');if(!w){return;}setZoom(Math.max(0.3,Math.min(1,(sc.clientWidth-20)/w.offsetWidth)));}
+var origRender=render;
+render=function(){origRender();layoutZoom();};
+
+// ---------- Events ----------
+function saveForm(){
+var v=$('nn').value.trim();
+if(!v){err='Enter a name first';render();$('nn').focus();return;}
+var n=nodes[sel];
+var target=mode==='child'?sel:n.pk;
+var pe=$('pos');
+var idx=pe?+pe.value:0;
+var st=$('ns').value;
+var fnInput=$('fn');
+if(fnInput&&fnInput.value.trim()){fromName=fnInput.value.trim().slice(0,60);lsSet('mft-from',fromName);}
+submitName(target,v,st,idx);
+}
+app.addEventListener('click',function(e){
+var t=e.target.closest('[data-a]');
+if(!t){
+if(sel&&!e.target.closest('#panel,#req,#login,input,select,textarea')){sel=null;mode=null;err='';delArm=null;render();}
+return;
+}
+var a=t.getAttribute('data-a'),id=t.getAttribute('data-id');
+var focusNew=false;
+if(a==='c'){toggleOpen(id);sel=id;mode=null;err='';delArm=null;render();return;}
+else if(a==='addc'){if(!canAdd){return;}sel=id;mode='child';err='';if(!openSet[id]){toggleOpen(id);}focusNew=true;}
+else if(a==='child'){if(!canAdd){return;}mode='child';err='';focusNew=true;}
+else if(a==='bro'){if(!canAdd){return;}mode='bro';err='';focusNew=true;}
+else if(a==='cancel'){mode=null;err='';}
+else if(a==='save'){saveForm();return;}
+else if(a==='older'){moveSel(-1);}
+else if(a==='younger'){moveSel(1);}
+else if(a==='del'){delSel();return;}
+else if(a==='apv'){approveNode(sel);return;}
+else if(a==='rej'){rejectNode(sel);return;}
+else if(a==='expall'){expandAllMode=true;autoExpandIfNeeded(rootIds);Object.keys(childrenOf).forEach(function(k){autoExpandIfNeeded(childrenOf[k]);});}
+else if(a==='colall'){expandAllMode=false;Object.keys(openSet).forEach(function(k){if(openSet[k]){detachChildListener(k);}});openSet={};}
+else if(a==='zi'){setZoom(zoom*1.25);return;}
+else if(a==='zo'){setZoom(zoom/1.25);return;}
+else if(a==='zf'){fit();return;}
+else if(a==='lopen'){loginOpen=true;loginErr='';}
+else if(a==='lgc'){loginOpen=false;loginErr='';}
+else if(a==='lgo'){doLogin();return;}
+else if(a==='lout'){setRole('v');afterRoleChange();return;}
+else if(a==='reqo'){reqOpen=!reqOpen;}
+else if(a==='backup'){downloadBackup();return;}
+else if(a==='jump'){openPathTo(id);return;}
+else if(a==='import'){importSeed();return;}
+else if(a==='go'){openPathTo(id);$('q').value='';searchResults=[];return;}
+else{return;}
+render();
+if(focusNew){var nn=$('nn');if(nn){nn.focus();}}
+});
+app.addEventListener('change',function(e){
+if(!sel){return;}
+var n=nodes[sel];if(!n){return;}
+if(e.target.id==='rn'){
+var v=e.target.value.trim();
+if(v&&v!==n.n&&(role==='a'||n.pending)){renameNode(sel,v);}
+}else if(e.target.id==='stt'){
+if(role==='a'||n.pending){statusNode(sel,e.target.value);}
+}
+});
+var searchTimer=null;
+app.addEventListener('input',function(e){
+if(e.target.id==='q'){
+clearTimeout(searchTimer);
+var v=e.target.value;
+searchTimer=setTimeout(function(){runSearch(v);},250);
+}
+});
+app.addEventListener('keydown',function(e){
+if(e.key==='Enter'&&e.target.id==='nn'){saveForm();}
+else if(e.key==='Enter'&&(e.target.id==='lu'||e.target.id==='lp')){doLogin();}
+});
+
+// ---------- Pinch / wheel zoom ----------
+function initZoomGestures(){
+var sc0=$('sc'),pinch=null;
+function dist(t){var dx=t[0].clientX-t[1].clientX,dy=t[0].clientY-t[1].clientY;return Math.sqrt(dx*dx+dy*dy);}
+sc0.addEventListener('touchstart',function(e){if(e.touches.length===2){pinch={d:dist(e.touches),z:zoom};}},{passive:true});
+sc0.addEventListener('touchmove',function(e){
+if(pinch&&e.touches.length===2){e.preventDefault();var cx=(e.touches[0].clientX+e.touches[1].clientX)/2;setZoom(pinch.z*dist(e.touches)/pinch.d,cx);}
+},{passive:false});
+sc0.addEventListener('touchend',function(e){if(e.touches.length<2){pinch=null;}},{passive:true});
+sc0.addEventListener('wheel',function(e){if(e.ctrlKey){e.preventDefault();setZoom(zoom*(e.deltaY<0?1.1:0.9),e.clientX);}},{passive:false});
+}
+
+// ---------- Boot ----------
+shell();
+fromName=lsGet('mft-from')||'';
+var r0='v';try{r0=sessionStorage.getItem('mft-role')||'v';}catch(e){}
+if(r0!=='a'&&r0!=='c'){r0='v';}
+setRole(r0);
+fbOk=initFirebase();
+if(!fbOk){
+live=false;msg='Could not connect to the database. Showing the last saved version.';
+render();
+}else{
+render();
+attachRootListener();
+if(role==='a'){attachPendingListener();}
+initZoomGestures();
+// if root check comes back empty after a moment and we're not live, keep offline view (handled in render via `live` flag)
+}
+})();
+
+</script>
+</body>
+</html>
