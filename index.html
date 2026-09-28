@@ -196,7 +196,9 @@ function detachPendingListener(){
 if(pendingUnsub){pendingUnsub();pendingUnsub=null;}
 pending=[];
 }
-var expandAllMode=false;
+var START_DEPTH=6; // the first 7 names (depth 0 to 6) are the starting point
+var expandLimit=START_DEPTH; // names shallower than this open by themselves, once
+var autoOpened={};
 function toggleOpen(id){
 if(openSet[id]){
 openSet[id]=false;detachChildListener(id);
@@ -205,12 +207,13 @@ openSet[id]=true;attachChildListener(id);
 }
 render();
 }
+function depthOf(id){var d=0,cur=nodes[id],g=0;while(cur&&cur.pk&&g<80){d++;cur=nodes[cur.pk];g++;}return d;}
 function autoExpandIfNeeded(ids){
-if(!expandAllMode){return;}
+if(!expandLimit){return;}
 var any=false;
 ids.forEach(function(id){
 var n=nodes[id];
-if(n&&n.hasKids&&!openSet[id]){openSet[id]=true;attachChildListener(id);any=true;}
+if(n&&n.hasKids&&!openSet[id]&&!autoOpened[id]&&depthOf(id)<expandLimit){autoOpened[id]=true;openSet[id]=true;attachChildListener(id);any=true;}
 });
 return any;
 }
@@ -688,8 +691,15 @@ zoom=nz;layoutZoomWrap();sc.scrollLeft=before*ratio-px;
 }
 function layoutZoomWrap(){layoutZoom();}
 function fit(){var sc=$('sc'),w=document.getElementById('zw');if(!w){return;}setZoom(Math.max(0.3,Math.min(1,(sc.clientWidth-20)/w.offsetWidth)));}
+var centerRootUntil=0;
+function centerOnRoot(){
+if(!centerRootUntil||Date.now()>centerRootUntil){return;}
+var id=rootIds[0];if(!id){return;}
+var el=document.querySelector('[data-card="'+id+'"]');
+if(el&&el.scrollIntoView){el.scrollIntoView({inline:'center',block:'nearest'});}
+}
 var origRender=render;
-render=function(){origRender();layoutZoom();};
+render=function(){origRender();layoutZoom();centerOnRoot();};
 
 // ---------- Events ----------
 function saveForm(){
@@ -724,11 +734,12 @@ else if(a==='mto'){moveTo(id);moveMode=null;}
 else if(a==='del'){delSel();return;}
 else if(a==='apv'){approveNode(sel);return;}
 else if(a==='rej'){rejectNode(sel);return;}
-else if(a==='expall'){expandAllMode=true;autoExpandIfNeeded(rootIds);Object.keys(childrenOf).forEach(function(k){autoExpandIfNeeded(childrenOf[k]);});}
-else if(a==='colall'){expandAllMode=false;Object.keys(openSet).forEach(function(k){if(openSet[k]){detachChildListener(k);}});openSet={};}
-else if(a==='zi'){setZoom(zoom*1.25);return;}
-else if(a==='zo'){setZoom(zoom/1.25);return;}
-else if(a==='zf'){fit();return;}
+else if(a==='expall'){expandLimit=99999;autoOpened={};mode=null;moveMode=null;sel=null;centerRootUntil=Date.now()+8000;
+autoExpandIfNeeded(rootIds);Object.keys(childrenOf).forEach(function(k){autoExpandIfNeeded(childrenOf[k]);});}
+else if(a==='colall'){expandLimit=0;Object.keys(openSet).forEach(function(k){if(openSet[k]){detachChildListener(k);}});openSet={};}
+else if(a==='zi'){centerRootUntil=0;setZoom(zoom*1.25);return;}
+else if(a==='zo'){centerRootUntil=0;setZoom(zoom/1.25);return;}
+else if(a==='zf'){centerRootUntil=0;fit();return;}
 else if(a==='lopen'){loginOpen=true;loginErr='';}
 else if(a==='lgc'){loginOpen=false;loginErr='';}
 else if(a==='lgo'){doLogin();return;}
@@ -769,12 +780,13 @@ else if(e.key==='Enter'&&(e.target.id==='lu'||e.target.id==='lp')){doLogin();}
 function initZoomGestures(){
 var sc0=$('sc'),pinch=null;
 function dist(t){var dx=t[0].clientX-t[1].clientX,dy=t[0].clientY-t[1].clientY;return Math.sqrt(dx*dx+dy*dy);}
-sc0.addEventListener('touchstart',function(e){if(e.touches.length===2){pinch={d:dist(e.touches),z:zoom};}},{passive:true});
+sc0.addEventListener('touchstart',function(e){centerRootUntil=0;if(e.touches.length===2){pinch={d:dist(e.touches),z:zoom};}},{passive:true});
+sc0.addEventListener('mousedown',function(){centerRootUntil=0;},{passive:true});
 sc0.addEventListener('touchmove',function(e){
 if(pinch&&e.touches.length===2){e.preventDefault();var cx=(e.touches[0].clientX+e.touches[1].clientX)/2;setZoom(pinch.z*dist(e.touches)/pinch.d,cx);}
 },{passive:false});
 sc0.addEventListener('touchend',function(e){if(e.touches.length<2){pinch=null;}},{passive:true});
-sc0.addEventListener('wheel',function(e){if(e.ctrlKey){e.preventDefault();setZoom(zoom*(e.deltaY<0?1.1:0.9),e.clientX);}},{passive:false});
+sc0.addEventListener('wheel',function(e){centerRootUntil=0;if(e.ctrlKey){e.preventDefault();setZoom(zoom*(e.deltaY<0?1.1:0.9),e.clientX);}},{passive:false});
 }
 
 // ---------- Boot ----------
