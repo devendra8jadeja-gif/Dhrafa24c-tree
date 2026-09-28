@@ -354,29 +354,38 @@ nodeRef(id).update({n:name,n_lower:name.toLowerCase()}).catch(function(){});
 function statusNode(id,s){
 nodeRef(id).update({s:s}).catch(function(){});
 }
+var moveMode=null,moveFor=null;
 function moveHtml(n){
 var all=childrenOf[n.pk]||[];
-var others=all.filter(function(x){return x!==n.id;});
-if(!others.length){return '';}
-var cur=all.indexOf(n.id);
-var h='<div class="muted small" style="margin:8px 0 4px">Change place among brothers</div><div class="row"><select id="mvpos" aria-label="Move to" style="flex:1;width:auto">';
-for(var k=others.length;k>=0;k--){
-var lb=k===others.length?'Eldest, older than '+nodes[others[others.length-1]].n:(k===0?'Youngest, younger than '+nodes[others[0]].n:'Between '+nodes[others[k]].n+' and '+nodes[others[k-1]].n);
-h+='<option value="'+k+'"'+(k===cur?' selected':'')+'>'+esc(lb)+(k===cur?' (now here)':'')+'</option>';
+if(all.length<2){return '';}
+var open=(moveFor===n.id)?moveMode:null;
+var on='style="background:var(--accent-bg);border-color:var(--accent)"';
+var h='<div class="row"><button data-a="mbig" '+(open==='big'?on:'')+'>\u2190 Big brother (left)</button><button data-a="msmall" '+(open==='small'?on:'')+'>Small brother (right) \u2192</button></div>';
+if(open){
+var others=all.filter(function(x){return x!==n.id;}).reverse();
+h+='<div class="muted small" style="margin:0 0 4px">Where should '+esc(n.n)+' go? Tap a brother:</div><div class="row">';
+others.forEach(function(id){
+h+='<button data-a="mto" data-id="'+id+'" style="font-size:13px;min-height:36px">'+(open==='big'?'Bigger than ':'Smaller than ')+esc(nodes[id].n)+'</button>';
+});
+h+='</div>';
 }
-return h+'</select><button data-a="mvgo">Move here</button></div>';
+return h;
 }
-function moveTo(){
+function moveTo(targetId){
 if(role!=='a'){return;}
-var n=nodes[sel];if(!n||!n.pk){return;}
-var pick=$('mvpos');if(!pick){return;}
-var k=+pick.value;
+var n=nodes[sel];if(!n||!n.pk||!moveMode||moveFor!==sel){return;}
 var all=childrenOf[n.pk]||[];
 var others=all.filter(function(x){return x!==sel;});
-if(k===all.indexOf(sel)){msg='Already in that place.';render();return;}
-var before=k>0?nodes[others[k-1]].ord:undefined;
-var after=k<others.length?nodes[others[k]].ord:undefined;
-msg='Moving…';render();
+var p=others.indexOf(targetId);
+if(p<0){return;}
+var before,after,newIdx;
+if(moveMode==='big'){
+before=nodes[others[p]].ord;after=others[p+1]?nodes[others[p+1]].ord:undefined;newIdx=p+1;
+}else{
+before=others[p-1]?nodes[others[p-1]].ord:undefined;after=nodes[others[p]].ord;newIdx=p;
+}
+if(all.indexOf(sel)===newIdx){msg='Already in that place.';moveMode=null;render();return;}
+msg='Moving\u2026';
 nodeRef(sel).update({ord:midOrd(before,after)}).then(function(){msg='Moved.';render();}).catch(function(){msg='Could not move. Try again.';render();});
 }
 function delSel(){
@@ -485,9 +494,11 @@ function runSearch(term){
 term=term.trim().toLowerCase();
 if(!term||!db){searchResults=[];render();return;}
 db.collection('people').where('n_lower','>=',term).where('n_lower','<',term+'\uf8ff').limit(8).get().then(function(qs){
-var arr=[];
-qs.forEach(function(doc){var d=doc.data();arr.push({id:doc.id,n:d.n,pk:d.pk});});
+var arr=[],need={};
+qs.forEach(function(doc){var d=doc.data();upsertFromSnap(doc);arr.push({id:doc.id,n:d.n,pk:d.pk});if(d.pk&&!nodes[d.pk]){need[d.pk]=1;}});
 searchResults=arr;render();
+var pids=Object.keys(need);
+if(pids.length){Promise.all(pids.map(function(pid){return nodeRef(pid).get().then(function(doc){if(doc.exists){upsertFromSnap(doc);}});})).then(function(){render();}).catch(function(){});}
 }).catch(function(){searchResults=[];render();});
 }
 
@@ -701,13 +712,15 @@ return;
 }
 var a=t.getAttribute('data-a'),id=t.getAttribute('data-id');
 var focusNew=false;
-if(a==='c'){toggleOpen(id);sel=id;mode=null;err='';delArm=null;render();return;}
+if(a==='c'){toggleOpen(id);sel=id;mode=null;moveMode=null;err='';delArm=null;render();return;}
 else if(a==='addc'){if(!canAdd){return;}sel=id;mode='child';err='';if(!openSet[id]){toggleOpen(id);}focusNew=true;}
 else if(a==='child'){if(!canAdd){return;}mode='child';err='';focusNew=true;}
 else if(a==='bro'){if(!canAdd){return;}mode='bro';err='';focusNew=true;}
 else if(a==='cancel'){mode=null;err='';}
 else if(a==='save'){saveForm();return;}
-else if(a==='mvgo'){moveTo();return;}
+else if(a==='mbig'){if(role!=='a'){return;}moveMode=(moveMode==='big'&&moveFor===sel)?null:'big';moveFor=sel;}
+else if(a==='msmall'){if(role!=='a'){return;}moveMode=(moveMode==='small'&&moveFor===sel)?null:'small';moveFor=sel;}
+else if(a==='mto'){moveTo(id);moveMode=null;}
 else if(a==='del'){delSel();return;}
 else if(a==='apv'){approveNode(sel);return;}
 else if(a==='rej'){rejectNode(sel);return;}
