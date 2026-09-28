@@ -29,7 +29,7 @@ input,select,textarea{background:var(--surface);border:1px solid var(--border);b
 #zw{display:inline-block;width:max-content;transform-origin:0 0}
 .ctr{display:flex;justify-content:center}
 .col{display:flex;flex-direction:column;align-items:center}
-.kids{display:flex;direction:rtl;align-items:flex-start}
+.kids{display:flex;align-items:flex-start}
 .kid{position:relative;padding:14px 4px 0;direction:ltr;display:flex;flex-direction:column;align-items:center}
 .ln{position:absolute;top:0;border-top:1px solid var(--border)}
 .stem{width:0;height:8px;border-left:1px solid var(--border)}
@@ -488,8 +488,8 @@ return h+'</div>';
 }
 function kidWrap(inner,i,total){
 var h='<div class="kid">';
-if(i>0){h+='<div class="ln" style="left:50%;right:0"></div>';}
-if(i<total-1){h+='<div class="ln" style="left:0;right:50%"></div>';}
+if(i>0){h+='<div class="ln" style="left:0;right:50%"></div>';}
+if(i<total-1){h+='<div class="ln" style="left:50%;right:0"></div>';}
 h+='<div class="ln" style="left:50%;height:14px;border-top:0;border-left:1px solid var(--border)"></div>';
 return h+inner+'</div>';
 }
@@ -517,9 +517,9 @@ var h='<div style="margin-top:6px"><div class="muted small" style="margin:0 0 4p
 h+='<div class="row"><input id="nn" placeholder="Name in English letters" style="flex:2"><select id="ns" style="flex:1;width:auto"><option value="U">Unknown</option><option value="A">Alive</option><option value="D">Dead</option></select></div>';
 if(ids.length){
 h+='<div class="row"><select id="pos">';
-for(var i=0;i<=ids.length;i++){
-var lb=i===0?'Eldest, older than '+nodes[ids[0]].n:(i===ids.length?'Youngest, younger than '+nodes[ids[ids.length-1]].n:'Between '+nodes[ids[i-1]].n+' and '+nodes[ids[i]].n);
-h+='<option value="'+i+'"'+(i===ids.length?' selected':'')+'>'+esc(lb)+'</option>';
+for(var i=ids.length;i>=0;i--){
+var lb=i===ids.length?'Eldest, older than '+nodes[ids[ids.length-1]].n:(i===0?'Youngest, younger than '+nodes[ids[0]].n:'Between '+nodes[ids[i]].n+' and '+nodes[ids[i-1]].n);
+h+='<option value="'+i+'"'+(i===0?' selected':'')+'>'+esc(lb)+'</option>';
 }
 h+='</select></div>';
 }
@@ -546,7 +546,7 @@ h+='<div class="row"><input id="rn" value="'+esc(n.n)+'" aria-label="Name" style
 h+='<div class="row"><button data-a="child">Add child</button>'+(n.pk?'<button data-a="bro">Add brother</button>':'')+'</div>';
 if(n.pending){h+='<div class="row"><button data-a="apv">Approve</button><button data-a="rej" style="color:var(--red)">'+(delArm===n.id?'Tap again to reject':'Reject')+'</button></div>';}
 if(n.pk){
-h+='<div class="row"><button data-a="older">Move right (older)</button><button data-a="younger">Move left (younger)</button></div>';
+h+='<div class="row"><button data-a="mvl">← Older</button><button data-a="mvr">Younger →</button></div>';
 if(!n.pending){h+='<div class="row"><button data-a="del" style="color:var(--red)">'+(delArm===n.id?'Tap again to delete':'Delete')+'</button></div>';}
 }
 }else if(n.pending&&role==='c'){
@@ -639,7 +639,7 @@ app.innerHTML='<div class="row" style="justify-content:space-between;align-items
 +'<div class="row" id="tools"></div>'
 +'<div class="leg"><span><span class="dot" style="background:var(--green)"></span>Alive</span><span><span class="dot" style="background:var(--red)"></span>Dead, has descendants</span><span><span class="dot" style="background:var(--text)"></span>Dead, branch ended</span><span><span class="dot" style="background:var(--accent)"></span>Unknown</span><span id="leg2"></span></div>'
 +'<div class="row" style="margin:0 0 6px"><button data-a="zo" aria-label="Zoom out">−</button><span id="zl" class="small muted" style="min-width:40px;text-align:center">100%</span><button data-a="zi" aria-label="Zoom in">+</button><button data-a="zf">Fit</button><span class="small muted">Pinch to zoom</span></div>'
-+'<div id="sc"></div><div class="muted small" style="margin:6px 0 0">Swipe to move around. The eldest is on the right.</div>'
++'<div id="sc"></div><div class="muted small" style="margin:6px 0 0">Swipe to move around. Older is on the left, younger on the right.</div>'
 +'<div id="req"></div><div id="panel"></div><div id="foot">Designed and created by DEVENDRASINH BALDEVSINH JADEJA</div>';
 $('ttl').textContent=SEED.title||'Family tree';
 }
@@ -693,8 +693,8 @@ else if(a==='child'){if(!canAdd){return;}mode='child';err='';focusNew=true;}
 else if(a==='bro'){if(!canAdd){return;}mode='bro';err='';focusNew=true;}
 else if(a==='cancel'){mode=null;err='';}
 else if(a==='save'){saveForm();return;}
-else if(a==='older'){moveSel(-1);}
-else if(a==='younger'){moveSel(1);}
+else if(a==='mvl'){moveSel(1);}
+else if(a==='mvr'){moveSel(-1);}
 else if(a==='del'){delSel();return;}
 else if(a==='apv'){approveNode(sel);return;}
 else if(a==='rej'){rejectNode(sel);return;}
