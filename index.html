@@ -357,39 +357,29 @@ nodeRef(id).update({n:name,n_lower:name.toLowerCase()}).catch(function(){});
 function statusNode(id,s){
 nodeRef(id).update({s:s}).catch(function(){});
 }
-var moveMode=null,moveFor=null;
 function moveHtml(n){
 var all=childrenOf[n.pk]||[];
 if(all.length<2){return '';}
-var open=(moveFor===n.id)?moveMode:null;
-var on='style="background:var(--accent-bg);border-color:var(--accent)"';
-var h='<div class="row"><button data-a="mbig" '+(open==='big'?on:'')+'>\u2190 Big brother (left)</button><button data-a="msmall" '+(open==='small'?on:'')+'>Small brother (right) \u2192</button></div>';
-if(open){
-var others=all.filter(function(x){return x!==n.id;}).reverse();
-h+='<div class="muted small" style="margin:0 0 4px">Where should '+esc(n.n)+' go? Tap a brother:</div><div class="row">';
-others.forEach(function(id){
-h+='<button data-a="mto" data-id="'+id+'" style="font-size:13px;min-height:36px">'+(open==='big'?'Bigger than ':'Smaller than ')+esc(nodes[id].n)+'</button>';
-});
-h+='</div>';
+return '<div class="row"><button data-a="mvl">\u2190 Move left</button><button data-a="mvr">Move right \u2192</button></div>';
 }
-return h;
-}
-function moveTo(targetId){
+function moveStep(dir){
 if(role!=='a'){return;}
-var n=nodes[sel];if(!n||!n.pk||!moveMode||moveFor!==sel){return;}
-var all=childrenOf[n.pk]||[];
-var others=all.filter(function(x){return x!==sel;});
-var p=others.indexOf(targetId);
-if(p<0){return;}
-var before,after,newIdx;
-if(moveMode==='big'){
-before=nodes[others[p]].ord;after=others[p+1]?nodes[others[p+1]].ord:undefined;newIdx=p+1;
+var n=nodes[sel];if(!n||!n.pk){return;}
+var ids=childrenOf[n.pk]||[];
+var i=ids.indexOf(sel);
+if(i<0){return;}
+var ord;
+if(dir==='l'){
+if(i>=ids.length-1){msg='Already at the far left.';render();return;}
+var b=nodes[ids[i+1]],c=ids[i+2]?nodes[ids[i+2]]:null;
+ord=midOrd(b.ord,c?c.ord:undefined);
 }else{
-before=others[p-1]?nodes[others[p-1]].ord:undefined;after=nodes[others[p]].ord;newIdx=p;
+if(i<=0){msg='Already at the far right.';render();return;}
+var b2=nodes[ids[i-1]],a2=ids[i-2]?nodes[ids[i-2]]:null;
+ord=midOrd(a2?a2.ord:undefined,b2.ord);
 }
-if(all.indexOf(sel)===newIdx){msg='Already in that place.';moveMode=null;render();return;}
-msg='Moving\u2026';
-nodeRef(sel).update({ord:midOrd(before,after)}).then(function(){msg='Moved.';render();}).catch(function(){msg='Could not move. Try again.';render();});
+msg='Moving\u2026';render();
+nodeRef(sel).update({ord:ord}).then(function(){msg='Moved.';render();}).catch(function(){msg='Could not move. Try again.';render();});
 }
 function delSel(){
 var n=nodes[sel];if(!n||!n.pk){return;}
@@ -722,15 +712,14 @@ return;
 }
 var a=t.getAttribute('data-a'),id=t.getAttribute('data-id');
 var focusNew=false;
-if(a==='c'){toggleOpen(id);sel=id;mode=null;moveMode=null;err='';delArm=null;render();return;}
+if(a==='c'){toggleOpen(id);sel=id;mode=null;err='';delArm=null;render();return;}
 else if(a==='addc'){if(!canAdd){return;}sel=id;mode='child';err='';if(!openSet[id]){toggleOpen(id);}focusNew=true;}
 else if(a==='child'){if(!canAdd){return;}mode='child';err='';focusNew=true;}
 else if(a==='bro'){if(!canAdd){return;}mode='bro';err='';focusNew=true;}
 else if(a==='cancel'){mode=null;err='';}
 else if(a==='save'){saveForm();return;}
-else if(a==='mbig'){if(role!=='a'){return;}moveMode=(moveMode==='big'&&moveFor===sel)?null:'big';moveFor=sel;}
-else if(a==='msmall'){if(role!=='a'){return;}moveMode=(moveMode==='small'&&moveFor===sel)?null:'small';moveFor=sel;}
-else if(a==='mto'){moveTo(id);moveMode=null;}
+else if(a==='mvl'){moveStep('l');return;}
+else if(a==='mvr'){moveStep('r');return;}
 else if(a==='del'){delSel();return;}
 else if(a==='apv'){approveNode(sel);return;}
 else if(a==='rej'){rejectNode(sel);return;}
