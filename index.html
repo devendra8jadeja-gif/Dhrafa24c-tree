@@ -360,23 +360,23 @@ nodeRef(id).update({s:s}).catch(function(){});
 function moveHtml(n){
 var all=childrenOf[n.pk]||[];
 if(all.length<2){return '';}
-return '<div class="row"><button data-a="mvl">\u2190 Move left</button><button data-a="mvr">Move right \u2192</button></div>';
+return '<div class="row"><button data-a="mvl">Move left</button><button data-a="mvr">Move right</button></div>';
 }
 function moveStep(dir){
 if(role!=='a'){return;}
 var n=nodes[sel];if(!n||!n.pk){return;}
-var ids=childrenOf[n.pk]||[];
+var ids=childrenOf[n.pk]||[]; // ascending ord: index 0 = smallest ord = shown on the LEFT
 var i=ids.indexOf(sel);
 if(i<0){return;}
 var ord;
 if(dir==='l'){
-if(i>=ids.length-1){msg='Already at the far left.';render();return;}
-var b=nodes[ids[i+1]],c=ids[i+2]?nodes[ids[i+2]]:null;
-ord=midOrd(b.ord,c?c.ord:undefined);
+if(i<=0){msg='Already at the far left.';render();return;}
+var b=nodes[ids[i-1]],c=ids[i-2]?nodes[ids[i-2]]:null;
+ord=midOrd(c?c.ord:undefined,b.ord);
 }else{
-if(i<=0){msg='Already at the far right.';render();return;}
-var b2=nodes[ids[i-1]],a2=ids[i-2]?nodes[ids[i-2]]:null;
-ord=midOrd(a2?a2.ord:undefined,b2.ord);
+if(i>=ids.length-1){msg='Already at the far right.';render();return;}
+var b2=nodes[ids[i+1]],a2=ids[i+2]?nodes[ids[i+2]]:null;
+ord=midOrd(b2.ord,a2?a2.ord:undefined);
 }
 msg='Moving\u2026';render();
 nodeRef(sel).update({ord:ord}).then(function(){msg='Moved.';render();}).catch(function(){msg='Could not move. Try again.';render();});
