@@ -140,7 +140,7 @@ var openSet={}; // id -> true if expanded
 var listeners={}; // id -> unsubscribe fn for that node's children
 var rootListenerUnsub=null;
 var rootIds=[];
-var sel=null,mode=null,err='',delArm=null,msg='',reqOpen=false,pending=[],pendingUnsub=null,importBusy=false;
+var sel=null,mode=null,err='',delArm=null,keepArm=null,msg='',reqOpen=false,pending=[],pendingUnsub=null,importBusy=false;
 var localFallback=null; // used only when Firestore has no data yet
 
 function nodeRef(id){return db.collection('people').doc(id);}
@@ -391,6 +391,43 @@ if(all.indexOf(sel)===newIdx){msg='Already in that place.';moveMode=null;render(
 msg='Moving\u2026';render();
 nodeRef(sel).update({ord:midOrd(before,after)}).then(function(){msg='Moved.';render();}).catch(function(){msg='Could not move. Try again.';render();});
 }
+function deleteKeepChildren(){
+if(role!=='a'){return;}
+var n=nodes[sel];if(!n||!n.pk||n.pending){return;}
+if(keepArm!==sel){keepArm=sel;delArm=null;render();setTimeout(function(){if(keepArm===sel){keepArm=null;render();}},4000);return;}
+keepArm=null;
+var parentId=n.pk;
+msg='Removing '+n.n+'\u2026';render();
+db.collection('people').where('pk','==',sel).get().then(function(qs){
+var kidsArr=[];
+qs.forEach(function(doc){kidsArr.push({id:doc.id,ord:doc.data().ord});});
+kidsArr.sort(function(x,y){return x.ord-y.ord;});
+var full=childrenOf[parentId]||[];
+var idx=full.indexOf(sel);
+var beforeOrd,afterOrd;
+if(idx>=0){
+beforeOrd=idx>0?nodes[full[idx-1]].ord:undefined;
+afterOrd=idx<full.length-1?nodes[full[idx+1]].ord:undefined;
+}else{
+beforeOrd=n.ord-1;afterOrd=n.ord+1;
+}
+var k=kidsArr.length,b=db.batch();
+if(k===0){
+b.delete(nodeRef(sel));
+}else{
+var lo=beforeOrd!==undefined?beforeOrd:(n.ord-2000*(k+1));
+var hi=afterOrd!==undefined?afterOrd:(n.ord+2000*(k+1));
+var step=(hi-lo)/(k+1);
+kidsArr.forEach(function(c,i){b.update(nodeRef(c.id),{pk:parentId,ord:lo+step*(i+1)});});
+b.delete(nodeRef(sel));
+}
+return b.commit();
+}).then(function(){
+walkUpIncrement(parentId,-1);
+if(openSet[sel]){detachChildListener(sel);delete openSet[sel];}
+sel=parentId;msg='Removed. The names below moved up one level.';render();
+}).catch(function(){msg='Could not remove. Try again.';render();});
+}
 function delSel(){
 var n=nodes[sel];if(!n||!n.pk){return;}
 if(role!=='a'&&!n.pending){return;}
@@ -575,7 +612,10 @@ h+='<div class="row"><button data-a="child">Add child</button>'+(n.pk?'<button d
 if(n.pending){h+='<div class="row"><button data-a="apv">Approve</button><button data-a="rej" style="color:var(--red)">'+(delArm===n.id?'Tap again to reject':'Reject')+'</button></div>';}
 if(n.pk){
 h+=moveHtml(n);
-if(!n.pending){h+='<div class="row"><button data-a="del" style="color:var(--red)">'+(delArm===n.id?'Tap again to delete':'Delete')+'</button></div>';}
+if(!n.pending){
+h+='<div class="row"><button data-a="del" style="color:var(--red)">'+(delArm===n.id?'Tap again to delete':'Delete')+'</button></div>';
+if(n.hasKids){h+='<div class="muted small" style="margin:4px 0 2px">Added as a child by mistake? This removes only '+esc(n.n)+' and moves everyone below up one level, under '+esc(nodes[n.pk]?nodes[n.pk].n:'')+'.</div><div class="row"><button data-a="delkeep" style="color:var(--red)">'+(keepArm===n.id?'Tap again to remove '+esc(n.n)+' only':'Delete '+esc(n.n)+', keep names below')+'</button></div>';}
+}
 }
 }else if(n.pending&&role==='c'){
 h+='<div class="row"><input id="rn" value="'+esc(n.n)+'" aria-label="Name" style="flex:2">'+statusSel(n)+'</div>';
@@ -722,7 +762,7 @@ return;
 }
 var a=t.getAttribute('data-a'),id=t.getAttribute('data-id');
 var focusNew=false;
-if(a==='c'){toggleOpen(id);sel=id;mode=null;moveMode=null;err='';delArm=null;render();return;}
+if(a==='c'){toggleOpen(id);sel=id;mode=null;moveMode=null;err='';delArm=null;keepArm=null;render();return;}
 else if(a==='addc'){if(!canAdd){return;}sel=id;mode='child';err='';if(!openSet[id]){toggleOpen(id);}focusNew=true;}
 else if(a==='child'){if(!canAdd){return;}mode='child';err='';focusNew=true;}
 else if(a==='bro'){if(!canAdd){return;}mode='bro';err='';focusNew=true;}
@@ -732,6 +772,7 @@ else if(a==='mbig'){if(role!=='a'){return;}moveMode=(moveMode==='big'&&moveFor==
 else if(a==='msmall'){if(role!=='a'){return;}moveMode=(moveMode==='small'&&moveFor===sel)?null:'small';moveFor=sel;}
 else if(a==='mto'){moveTo(id);moveMode=null;}
 else if(a==='del'){delSel();return;}
+else if(a==='delkeep'){deleteKeepChildren();return;}
 else if(a==='apv'){approveNode(sel);return;}
 else if(a==='rej'){rejectNode(sel);return;}
 else if(a==='expall'){expandLimit=99999;autoOpened={};mode=null;moveMode=null;sel=null;centerRootUntil=Date.now()+8000;
