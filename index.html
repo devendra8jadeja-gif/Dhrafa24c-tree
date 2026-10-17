@@ -596,6 +596,77 @@ if(err){h+='<div style="color:var(--red);font-size:13px">'+esc(err)+'</div>';}
 return h+'</div>';
 }
 function statusSel(n){return '<select id="stt" aria-label="Status" style="flex:1;width:auto"><option value="A"'+(n.s==='A'?' selected':'')+'>Alive</option><option value="D"'+(n.s==='D'?' selected':'')+'>Dead</option><option value="U"'+(n.s==='U'?' selected':'')+'>Unknown</option></select>';}
+var reparentOpen=null,reparentResults=[],reparentTimer=null;
+function chainNamesAndIds(id,cb){
+var names=[],ids=[],cur=nodes[id],guard=0;
+function step(){
+if(!cur||guard>80){cb(names,ids);return;}
+names.unshift(cur.n);ids.unshift(cur.id);
+if(!cur.pk){cb(names,ids);return;}
+if(nodes[cur.pk]){cur=nodes[cur.pk];guard++;step();}
+else{
+nodeRef(cur.pk).get().then(function(doc){
+if(doc.exists){upsertFromSnap(doc);cur=nodes[cur.pk];guard++;step();}
+else{cb(names,ids);}
+}).catch(function(){cb(names,ids);});
+}
+}
+step();
+}
+function chainNamesAndIdsP(id){return new Promise(function(res){chainNamesAndIds(id,function(names,ids){res({names:names,ids:ids});});});}
+function reparentSearch(term){
+term=term.trim().toLowerCase();
+var selfId=reparentOpen;
+if(!term||!db||!selfId){reparentResults=[];render();return;}
+db.collection('people').where('n_lower','>=',term).where('n_lower','<',term+'\uf8ff').limit(8).get().then(function(qs){
+var found=[];qs.forEach(function(doc){upsertFromSnap(doc);found.push(doc.id);});
+return Promise.all(found.map(function(id){
+return chainNamesAndIdsP(id).then(function(r){
+return {id:id,n:nodes[id].n,chain:r.names,isDescendant:r.ids.indexOf(selfId)>-1};
+});
+}));
+}).then(function(arr){
+if(reparentOpen!==selfId){return;}
+reparentResults=arr;render();
+}).catch(function(){reparentResults=[];render();});
+}
+function reparentResultsHtml(n){
+if(!reparentResults.length){return '';}
+var h='<div class="muted small" style="margin:4px 0">Tap the right person to confirm, then move:</div>';
+reparentResults.forEach(function(r){
+var already=r.id===n.pk;
+var isSelf=r.id===n.id;
+var bad=r.isDescendant;
+h+='<div style="border-top:1px solid var(--border);padding:6px 0"><div style="font-size:13px;font-weight:500">'+esc(r.n)+'</div><div class="muted small">'+r.chain.map(esc).join(' \u203a ')+'</div>';
+if(isSelf){h+='<div class="small" style="color:var(--amber)">That is '+esc(n.n)+' itself</div>';}
+else if(bad){h+='<div class="small" style="color:var(--amber)">Cannot move '+esc(n.n)+' into one of their own descendants</div>';}
+else if(already){h+='<div class="small" style="color:var(--amber)">Already the father</div>';}
+else{h+='<div class="row" style="margin:4px 0 0"><button data-a="rpgo" data-id="'+r.id+'">Move '+esc(n.n)+' under '+esc(r.n)+'</button></div>';}
+h+='</div>';
+});
+return h;
+}
+function moveBranch(targetId){
+if(role!=='a'){return;}
+var n=nodes[sel];if(!n||!n.pk||!reparentOpen||reparentOpen!==sel){return;}
+if(targetId===n.id||targetId===n.pk){return;}
+var oldParent=n.pk,delta=1+(n.count||0);
+msg='Moving\u2026';render();
+db.collection('people').where('pk','==',targetId).get().then(function(qs){
+var maxOrd=undefined;
+qs.forEach(function(doc){var o=doc.data().ord;if(maxOrd===undefined||o>maxOrd){maxOrd=o;}});
+var newOrd=maxOrd===undefined?1000:maxOrd+1000;
+return nodeRef(n.id).update({pk:targetId,ord:newOrd});
+}).then(function(){
+return nodeRef(targetId).set({hasKids:true},{merge:true});
+}).then(function(){
+walkUpIncrement(oldParent,-delta);
+walkUpIncrement(targetId,delta);
+reparentOpen=null;reparentResults=[];
+if(openSet[n.id]){detachChildListener(n.id);openSet[n.id]=false;}
+sel=n.id;msg='Moved.';render();
+}).catch(function(){msg='Could not move. Try again.';render();});
+}
 function panelHtml(){
 if(!sel){return '';}
 var n=nodes[sel];
@@ -615,6 +686,11 @@ h+=moveHtml(n);
 if(!n.pending){
 h+='<div class="row"><button data-a="del" style="color:var(--red)">'+(delArm===n.id?'Tap again to delete':'Delete')+'</button></div>';
 if(n.hasKids){h+='<div class="muted small" style="margin:4px 0 2px">Added as a child by mistake? This removes only '+esc(n.n)+' and moves everyone below up one level, under '+esc(nodes[n.pk]?nodes[n.pk].n:'')+'.</div><div class="row"><button data-a="delkeep" style="color:var(--red)">'+(keepArm===n.id?'Tap again to remove '+esc(n.n)+' only':'Delete '+esc(n.n)+', keep names below')+'</button></div>';}
+h+='<div class="muted small" style="margin:8px 0 2px">Need to move '+esc(n.n)+' and everyone below under a different father?</div><div class="row"><button data-a="reopen">'+(reparentOpen===n.id?'Cancel moving':'Move under a different name')+'</button></div>';
+if(reparentOpen===n.id){
+h+='<div class="row"><input id="rsearch" placeholder="Search the new father\'s name"></div>';
+h+=reparentResultsHtml(n);
+}
 }
 }
 }else if(n.pending&&role==='c'){
@@ -708,7 +784,7 @@ app.innerHTML='<div class="row" style="justify-content:space-between;align-items
 +'<div class="leg"><span><span class="dot" style="background:var(--green)"></span>Alive</span><span><span class="dot" style="background:var(--red)"></span>Dead, has descendants</span><span><span class="dot" style="background:var(--text)"></span>Dead, branch ended</span><span><span class="dot" style="background:var(--accent)"></span>Unknown</span><span id="leg2"></span></div>'
 +'<div class="row" style="margin:0 0 6px"><button data-a="zo" aria-label="Zoom out">−</button><span id="zl" class="small muted" style="min-width:40px;text-align:center">100%</span><button data-a="zi" aria-label="Zoom in">+</button><button data-a="zf">Fit</button><span class="small muted">Pinch to zoom</span></div>'
 +'<div id="sc"></div><div class="muted small" style="margin:6px 0 0">Swipe to move around. Older is on the left, younger on the right.</div>'
-+'<div id="req"></div><div id="panel"></div><div id="foot">Designed and created by DEVENDRASINH BALDEVSINH JADEJA</div>';
++'<div id="req"></div><div id="panel"></div><div id="foot">Website designed and developed by Devendrasinh Baldevsinh Jadeja<br>Dushyantsinh Rajendrasinh Jadeja helping to preserve the heritage of Dhrafa</div>';
 $('ttl').textContent=SEED.title||'Family tree';
 }
 function showCard(id){var el=document.querySelector('[data-card="'+id+'"]');if(el&&el.scrollIntoView){el.scrollIntoView({inline:'center',block:'nearest'});}}
@@ -762,7 +838,7 @@ return;
 }
 var a=t.getAttribute('data-a'),id=t.getAttribute('data-id');
 var focusNew=false;
-if(a==='c'){toggleOpen(id);sel=id;mode=null;moveMode=null;err='';delArm=null;keepArm=null;render();return;}
+if(a==='c'){toggleOpen(id);sel=id;mode=null;moveMode=null;err='';delArm=null;keepArm=null;reparentOpen=null;reparentResults=[];render();return;}
 else if(a==='addc'){if(!canAdd){return;}sel=id;mode='child';err='';if(!openSet[id]){toggleOpen(id);}focusNew=true;}
 else if(a==='child'){if(!canAdd){return;}mode='child';err='';focusNew=true;}
 else if(a==='bro'){if(!canAdd){return;}mode='bro';err='';focusNew=true;}
@@ -773,9 +849,12 @@ else if(a==='msmall'){if(role!=='a'){return;}moveMode=(moveMode==='small'&&moveF
 else if(a==='mto'){moveTo(id);moveMode=null;}
 else if(a==='del'){delSel();return;}
 else if(a==='delkeep'){deleteKeepChildren();return;}
+else if(a==='reopen'){if(role!=='a'){return;}reparentOpen=(reparentOpen===sel)?null:sel;reparentResults=[];focusNew=true;}
+else if(a==='rpgo'){moveBranch(id);return;}
 else if(a==='apv'){approveNode(sel);return;}
 else if(a==='rej'){rejectNode(sel);return;}
 else if(a==='expall'){expandLimit=99999;autoOpened={};mode=null;moveMode=null;sel=null;centerRootUntil=Date.now()+8000;
+Object.keys(openSet).forEach(function(k){if(openSet[k]&&depthOf(k)>=expandLimit){openSet[k]=false;detachChildListener(k);}});
 autoExpandIfNeeded(rootIds);Object.keys(childrenOf).forEach(function(k){autoExpandIfNeeded(childrenOf[k]);});}
 else if(a==='colall'){expandLimit=0;Object.keys(openSet).forEach(function(k){if(openSet[k]){detachChildListener(k);}});openSet={};}
 else if(a==='zi'){centerRootUntil=0;setZoom(zoom*1.25);return;}
@@ -792,7 +871,7 @@ else if(a==='import'){importSeed();return;}
 else if(a==='go'){openPathTo(id);$('q').value='';searchResults=[];return;}
 else{return;}
 render();
-if(focusNew){var nn=$('nn');if(nn){nn.focus();}}
+if(focusNew){var nn=$('nn')||$('rsearch');if(nn){nn.focus();}}
 });
 app.addEventListener('change',function(e){
 if(!sel){return;}
@@ -810,6 +889,10 @@ if(e.target.id==='q'){
 clearTimeout(searchTimer);
 var v=e.target.value;
 searchTimer=setTimeout(function(){runSearch(v);},250);
+}else if(e.target.id==='rsearch'){
+clearTimeout(reparentTimer);
+var v2=e.target.value;
+reparentTimer=setTimeout(function(){reparentSearch(v2);},250);
 }
 });
 app.addEventListener('keydown',function(e){
