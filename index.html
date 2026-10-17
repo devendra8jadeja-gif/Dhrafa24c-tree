@@ -784,13 +784,13 @@ app.innerHTML='<div class="row" style="justify-content:space-between;align-items
 +'<div class="leg"><span><span class="dot" style="background:var(--green)"></span>Alive</span><span><span class="dot" style="background:var(--red)"></span>Dead, has descendants</span><span><span class="dot" style="background:var(--text)"></span>Dead, branch ended</span><span><span class="dot" style="background:var(--accent)"></span>Unknown</span><span id="leg2"></span></div>'
 +'<div class="row" style="margin:0 0 6px"><button data-a="zo" aria-label="Zoom out">−</button><span id="zl" class="small muted" style="min-width:40px;text-align:center">100%</span><button data-a="zi" aria-label="Zoom in">+</button><button data-a="zf">Fit</button><span class="small muted">Pinch to zoom</span></div>'
 +'<div id="sc"></div><div class="muted small" style="margin:6px 0 0">Swipe to move around. Older is on the left, younger on the right.</div>'
-+'<div id="req"></div><div id="panel"></div><div id="foot">Website designed and developed by Devendrasinh Baldevsinh Jadeja<br>Dushyantsinh Rajendrasinh Jadeja helping to preserve the heritage of Dhrafa</div>';
++'<div id="req"></div><div id="panel"></div><div id="foot">Website designed and developed by <b>Devendrasinh Baldevsinh Jadeja</b><br>&<br><b>Dushyantsinh Rajendrasinh Jadeja</b> helping to preserve the heritage of Dhrafa</div>';
 $('ttl').textContent=SEED.title||'Family tree';
 }
 function showCard(id){var el=document.querySelector('[data-card="'+id+'"]');if(el&&el.scrollIntoView){el.scrollIntoView({inline:'center',block:'nearest'});}}
 
 // ---------- Zoom ----------
-var zoom=1;
+var zoom=0.41; // starting zoom, so names are easier to find at a glance; zoom controls still let anyone go back to 100% or further
 function layoutZoom(){
 var zs=document.getElementById('zs'),w=document.getElementById('zw');if(!zs||!w){return;}
 w.style.transform='scale('+zoom+')';
