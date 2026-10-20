@@ -204,7 +204,7 @@ function detachPendingListener(){
 if(pendingUnsub){pendingUnsub();pendingUnsub=null;}
 pending=[];
 }
-var START_DEPTH=6; // the first 7 names (depth 0 to 6) are the starting point
+var START_DEPTH=7; // the first 7 ancestors, plus Modji's 14 children, open automatically
 var expandLimit=START_DEPTH; // names shallower than this open by themselves, once
 var autoOpened={};
 function toggleOpen(id){
@@ -568,7 +568,9 @@ var arr=[];
 qs.forEach(function(doc){upsertFromSnap(doc);arr.push(doc.id);});
 arr.sort(function(x,y){return (nodes[x].ord||0)-(nodes[y].ord||0);});
 arr.forEach(function(id,i){if(i<MODJI_COLORS.length){modjiChildColor[id]=MODJI_COLORS[i];}});
-modjiColorsReady=true;render();
+modjiColorsReady=true;
+if(!openSet[modjiId]){openSet[modjiId]=true;attachChildListener(modjiId);}
+render();
 }).catch(function(){});
 }
 function branchColorOf(id){
